@@ -1,0 +1,15 @@
+[project]
+name = "local-model-eval"
+version = "0.1.0"
+description = "Download selected Huggingface GGUF models, evaluate locally on Apple hardware"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "absl-py>=2.1.0",
+    "datasets>=3.2.0",
+    "evaluate>=0.4.3",
+    "llama-cpp-python>=0.3.7",
+    "nltk>=3.9.1",
+    "rouge-score>=0.1.2",
+    "statistics>=1.0.3.5",
+]
