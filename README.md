@@ -1,23 +1,34 @@
 # local-model-eval
 
-This repo contains a simple script that measures the performance of [GGUF](https://huggingface.co/docs/hub/en/gguf) LLMs hosted on Huggingface, as executed by the [llama.cpp python bindings](https://github.com/abetlen/llama-cpp-python).  It is a quick and dirty attempt to do this, and could be improved in many ways.
-
-To add a model, open the script, add it manually to MODEL_NAMES, instructions on how to do that are in the script.
+This repo contains a simple script that measures the performance of [GGUF](https://huggingface.co/docs/hub/en/gguf) LLMs hosted on Huggingface, as executed by the [llama.cpp python bindings](https://github.com/abetlen/llama-cpp-python).  It seems plausible that the performance of the llama-cpp-python is comparable to what you would expect running Ollama, given it is also based on llama.cpp.
 
 Results will be stored in results.json (which will be overwritten after successful execution).
 
-NOTE:
+## Limitations
 - the [xsum dataset](https://huggingface.co/datasets/EdinburghNLP/xsum) requires local code execution to download the dataset from github
-- models being evaluated will be downloaded and stored locally in huggingface_models.  Models can be large and downloading can be slo
+- models being evaluated will be downloaded and stored locally in huggingface_models.  Models can be large and downloading can be slow
 - this is intended for use on Macs, but will probably work on other architectures
+- this is a quick and dirty attempt to do this, and could be improved in many ways, for example tweaking settings passed to llama.cpp
+
+## Setting options
+
+The list of models that will be evaluated have to be manually updated in `eval.py`.  There are instructions in the script on how to do that.
+
+An example models, `hugging-quants/Llama-3.2-3B-Instruct-Q8_0-GGUF` is already defined by default.
+
+The number of evaluations that are run for each task is configurable as well, see the script for instructions.
 
 ## Setup and running
 
 (optional, install [uv](https://github.com/astral-sh/uv))
-uv run eval.py
-# with debugging: LOGLEVEL=DEBUG uv run eval.py
+
+```
+uv run eval.py # add LOGLEVEL=DEBUG for debugging
+```
 
 ## Evaluations
+
+A few different evaluations are run against the model and statistics are calculated.  For summarization and question answering tasks, you can adjust how many examples from the dataset are executed, obviously the more you run the more accurate the derived statistics, but the slower it will run.
 
 - speed - mean/stdev measurements of tokens per second when performing evaluation tasks
 - summarization tasks - instructs the model to summarize texts from the [xsum dataset](https://huggingface.co/datasets/EdinburghNLP/xsum), scored by the [ROUGE metric](https://huggingface.co/metrics/rouge)
